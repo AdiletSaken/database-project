@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sign up</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <?php
+            $page = "sign_up";
+            include "navbar.php";
+        ?>
+        <div class="container">
+            <div class="row justify-content-center p-3">
+                <div class="col-md-11 col-lg-8 col-xl-7">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-person" role="tab" aria-controls="nav-home" aria-selected="true">Person</a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-company" role="tab" aria-controls="nav-profile" aria-selected="false">Company</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active p-3" id="nav-person" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <form action="/api/person/sign_up.php" method="POST">
+                                <div class="row form-group">
+                                    <label for="first-name" class="col-md-3 col-form-label">First name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" id="first-name" placeholder="First name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="last-name" class="col-md-3 col-form-label">Last name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" id="last-name" placeholder="Last name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="phone" class="col-md-3 col-form-label">Phone number</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" id="phone" placeholder="Phone number">
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label for="birthday" class="col-md-3 col-form-label">Birthday</label>
+                                    <div class="col-md-9">
+                                        <input type="date" class="form-control" id="birthday" placeholder="Birthday">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="email" class="col-md-3 col-form-label">Email</label>
+                                    <div class="col-md-9">
+                                        <input type="email" class="form-control" id="email" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="password" class="col-md-3 col-form-label">Password</label>
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" id="password" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-primary btn-block">Sign up</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade p-3" id="nav-company" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <form action="/api/company/sign_up.php" method="POST">
+                                <div class="row form-group">
+                                    <label for="name" class="col-md-3 col-form-label">Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" id="name" placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="email" class="col-md-3 col-form-label">Email</label>
+                                    <div class="col-md-9">
+                                        <input type="email" class="form-control" id="email" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="password" class="col-md-3 col-form-label">Password</label>
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" id="password" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-primary btn-block">Sign up</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
