@@ -23,41 +23,41 @@
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active p-3" id="nav-person" role="tabpanel" aria-labelledby="nav-home-tab">
-                            <form action="/api/person/sign_up.php" method="POST">
+                            <form action="api/person/sign_up.php" method="POST">
                                 <div class="row form-group">
                                     <label for="first-name" class="col-md-3 col-form-label">First name</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" id="first-name" placeholder="First name">
+                                        <input type="text" class="form-control" id="first-name" name="first-name" placeholder="First name">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="last-name" class="col-md-3 col-form-label">Last name</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" id="last-name" placeholder="Last name">
+                                        <input type="text" class="form-control" id="last-name" name="last-name" placeholder="Last name">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="phone" class="col-md-3 col-form-label">Phone number</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" id="phone" placeholder="Phone number">
+                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone number">
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <label for="birthday" class="col-md-3 col-form-label">Birthday</label>
                                     <div class="col-md-9">
-                                        <input type="date" class="form-control" id="birthday" placeholder="Birthday">
+                                        <input type="date" class="form-control" id="birthday" name="birthday" placeholder="Birthday">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="email" class="col-md-3 col-form-label">Email</label>
                                     <div class="col-md-9">
-                                        <input type="email" class="form-control" id="email" placeholder="Email">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="password" class="col-md-3 col-form-label">Password</label>
                                     <div class="col-md-9">
-                                        <input type="password" class="form-control" id="password" placeholder="Password">
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -68,23 +68,23 @@
                             </form>
                         </div>
                         <div class="tab-pane fade p-3" id="nav-company" role="tabpanel" aria-labelledby="nav-profile-tab">
-                            <form action="/api/company/sign_up.php" method="POST">
+                            <form action="api/company/sign_up.php" method="POST">
                                 <div class="row form-group">
                                     <label for="name" class="col-md-3 col-form-label">Name</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" id="name" placeholder="Name">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Name">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="email" class="col-md-3 col-form-label">Email</label>
                                     <div class="col-md-9">
-                                        <input type="email" class="form-control" id="email" placeholder="Email">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="password" class="col-md-3 col-form-label">Password</label>
                                     <div class="col-md-9">
-                                        <input type="password" class="form-control" id="password" placeholder="Password">
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -98,5 +98,30 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">
+                            <?php
+                                echo htmlspecialchars($_GET['title']);
+                            ?>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <?php
+                            echo htmlspecialchars($_GET['content']);
+                        ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="scripts/script.js"></script>
     </body>
 </html>
