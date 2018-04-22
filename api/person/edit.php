@@ -10,8 +10,6 @@
         $statement->bindParam(':new_email', $email, PDO::PARAM_STR, 50);
         $statement->bindParam(':email', $_SESSION['email'], PDO::PARAM_STR, 50);
 
-        echo 'test';
-
         if ($statement->execute()) {
             $_SESSION['email'] = $email;
             $_SESSION['type'] = 'person';
@@ -23,7 +21,7 @@
     }
 
     function editAccount($connection, $first_name, $last_name, $phone, $birthday, $email, $password) {
-        if ($password != '********') {
+        if ($password != '') {
             $statement = $connection->prepare("UPDATE people SET password = :password WHERE email = :email;");
             $statement->bindParam(':password', hash('sha256', $password), PDO::PARAM_STR, 64);
             $statement->bindParam(':email', $_SESSION['email'], PDO::PARAM_STR, 50);
@@ -37,7 +35,6 @@
             editAccountWithoutPassword($connection, $first_name, $last_name, $phone, $birthday, $email);
         }
     }
-
 
     $first_name = $_POST['first-name'];
     $last_name = $_POST['last-name'];

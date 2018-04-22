@@ -25,7 +25,7 @@
 			<?php } ?>
 		</ul>
 		<?php if (isset($_SESSION['email'])) { ?>
-			<a href="/api/sign_out.php" class="btn btn-light">Sign out</a>
+			<a href="/api/sign_out.php" class="btn btn-outline-light">Sign out</a>
 		<?php } ?>
 	</div>
 </nav>

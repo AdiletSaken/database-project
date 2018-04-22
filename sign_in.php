@@ -26,7 +26,7 @@
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active p-3" id="nav-person" role="tabpanel" aria-labelledby="nav-home-tab">
-                            <form action="api/person/sign_in.php" method="POST">
+                            <form action="/api/person/sign_in.php" method="POST">
                                 <div class="form-group row">
                                     <label for="email" class="col-md-3 col-form-label">Email</label>
                                     <div class="col-md-9">
@@ -47,7 +47,7 @@
                             </form>
                         </div>
                         <div class="tab-pane fade p-3" id="nav-company" role="tabpanel" aria-labelledby="nav-profile-tab">
-                            <form action="api/company/sign_in.php" method="POST">
+                            <form action="/api/company/sign_in.php" method="POST">
                                 <div class="form-group row">
                                     <label for="email" class="col-md-3 col-form-label">Email</label>
                                     <div class="col-md-9">
@@ -95,6 +95,6 @@
                 </div>
             </div>
         </div>
-        <script src="scripts/script.js"></script>
+        <script src="/scripts/script.js"></script>
     </body>
 </html>

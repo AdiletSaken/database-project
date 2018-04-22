@@ -11,7 +11,7 @@
     $statement->bindParam(':password', hash('sha256', $password), PDO::PARAM_STR, 64);
     $statement->execute();
 
-    if ($statement->rowCount() > 0) {
+    if ($statement->rowCount() == 1) {
         $_SESSION['email'] = $email;
         $_SESSION['type'] = 'person';
 

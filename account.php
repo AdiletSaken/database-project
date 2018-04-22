@@ -23,7 +23,7 @@
 
             if ($_SESSION['type'] == 'person') {
                 $statement = $connection->prepare("SELECT * FROM people WHERE email = :email;");
-            } else {
+            } else if ($_SESSION['type'] == 'company') {
                 $statement = $connection->prepare("SELECT * FROM companies WHERE email = :email;");
             }
             $statement->bindParam(':email', $_SESSION['email'], PDO::PARAM_STR, 50);
@@ -32,7 +32,7 @@
             if ($statement->rowCount() == 1) {
                 $account = $statement->fetch();
             } else {
-                header('Location: api/sign_out.php');
+                header('Location: /api/sign_out.php');
             }
         ?>
         <div class="container p-3">
@@ -47,8 +47,8 @@
                             <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#editAccount" aria-expanded="false" aria-controls="edit">Edit account</button>
                         </p>
                         <div class="collapse" id="editAccount">
-                            <div class="card card-body">
-                                <form action="api/person/edit.php" method="POST">
+                            <div class="card card-body mb-3">
+                                <form action="/api/person/edit.php" method="POST">
                                     <div class="row form-group">
                                         <label for="first-name" class="col-md-3 col-form-label">First name</label>
                                         <div class="col-md-9">
@@ -82,17 +82,85 @@
                                     <div class="form-group row">
                                         <label for="password" class="col-md-3 col-form-label">Password</label>
                                         <div class="col-md-9">
-                                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="********">
+                                            <input type="password" class="form-control" id="password" name="password" placeholder="New password">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-0">
                                         <div class="col">
-                                            <button type="submit" class="btn btn-primary btn-block">Save changes</button>
+                                            <button type="submit" class="btn btn-success btn-block">Save changes</button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
+                        <form action="/api/delete.php" method="POST">
+                            <button class="btn btn-danger btn-block" type="submit">Delete account</button>
+                        </form>
+                    <?php } else if ($_SESSION['type'] == 'company') { ?>
+                        <p>
+                            <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#editAccount" aria-expanded="false" aria-controls="edit">Edit account</button>
+                        </p>
+                        <div class="collapse" id="editAccount">
+                            <div class="card card-body mb-3">
+                                <form action="/api/company/edit.php" method="POST">
+                                    <div class="row form-group">
+                                        <label for="name" class="col-md-3 col-form-label">Name</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?php echo $account['name']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="email" class="col-md-3 col-form-label">Email</label>
+                                        <div class="col-md-9">
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?php echo $account['email']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="password" class="col-md-3 col-form-label">Password</label>
+                                        <div class="col-md-9">
+                                            <input type="password" class="form-control" id="password" name="password" placeholder="New password">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-0">
+                                        <div class="col">
+                                            <button type="submit" class="btn btn-success btn-block">Save changes</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="collapse" id="editPromo">
+                            <div class="card card-body mb-3">
+                                <form action="/api/company/edit_promo.php" method="POST">
+                                    <div class="row form-group">
+                                        <label for="name" class="col-md-3 col-form-label">Name</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?php echo $account['name']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="email" class="col-md-3 col-form-label">Email</label>
+                                        <div class="col-md-9">
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?php echo $account['email']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="password" class="col-md-3 col-form-label">Password</label>
+                                        <div class="col-md-9">
+                                            <input type="password" class="form-control" id="password" name="password" placeholder="New password">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-0">
+                                        <div class="col">
+                                            <button type="submit" class="btn btn-success btn-block">Save changes</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <form action="/api/delete.php" method="POST">
+                            <button class="btn btn-danger btn-block" type="submit">Delete account</button>
+                        </form>
                     <?php } ?>
                 </div>
             </div>
@@ -121,6 +189,6 @@
                 </div>
             </div>
         </div>
-        <script src="scripts/script.js"></script>
+        <script src="/scripts/script.js"></script>
     </body>
 </html>
