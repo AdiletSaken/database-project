@@ -16,9 +16,6 @@
     </head>
     <body>
         <?php
-            $page = "account";
-            include "navbar.php";
-
             $connection = new PDO('pgsql:host=localhost port=5432 dbname=bonus');
 
             if ($_SESSION['type'] == 'person') {
@@ -34,6 +31,21 @@
             } else {
                 header('Location: /api/sign_out.php');
             }
+
+            if ($_SESSION['type'] == 'company') {
+                $statement = $connection->prepare("SELECT * FROM people WHERE company_id = :company_id;");
+                $statement->bindParam(':company_id', $account['id'], PDO::PARAM_STR);
+                $statement->execute();
+    
+                $staff = array();
+
+                while ($row = $statement->fetch()) {
+                    array_push($staff, $row);
+                }
+            }
+
+            $page = "account";
+            include "navbar.php";
         ?>
         <div class="container p-3">
             <div class="row justify-content-center">
@@ -97,6 +109,13 @@
                             <button class="btn btn-danger btn-block" type="submit">Delete account</button>
                         </form>
                     <?php } else if ($_SESSION['type'] == 'company') { ?>
+                        <div class="alert alert-primary text-center" role="alert">
+                            <h3 class="alert-heading mb-0">
+                                <?php
+                                    echo $account['name'];
+                                ?>
+                            </h3>
+                        </div>
                         <p>
                             <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#editAccount" aria-expanded="false" aria-controls="edit">Edit account</button>
                         </p>
@@ -129,30 +148,70 @@
                                 </form>
                             </div>
                         </div>
+                        <p>
+                            <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#editPromo" aria-expanded="false" aria-controls="edit">Edit promo</button>
+                        </p>
                         <div class="collapse" id="editPromo">
                             <div class="card card-body mb-3">
                                 <form action="/api/company/edit_promo.php" method="POST">
-                                    <div class="row form-group">
-                                        <label for="name" class="col-md-3 col-form-label">Name</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?php echo $account['name']; ?>">
+                                    <div class="form-group row">
+                                        <label for="full" class="col-md-4 col-form-label">Full percentage</label>
+                                        <div class="col-md-8">
+                                            <input type="number"step="0.01" class="form-control" id="full" name="full" placeholder="Full percentage" value="<?php echo $account['percentage_full']; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="email" class="col-md-3 col-form-label">Email</label>
-                                        <div class="col-md-9">
-                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?php echo $account['email']; ?>">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="password" class="col-md-3 col-form-label">Password</label>
-                                        <div class="col-md-9">
-                                            <input type="password" class="form-control" id="password" name="password" placeholder="New password">
+                                        <label for="mixed" class="col-md-4 col-form-label">Mixed percentage</label>
+                                        <div class="col-md-8">
+                                            <input type="number" step="0.01" class="form-control" id="mixed" name="mixed" placeholder="Mixed percentage" value="<?php echo $account['percentage_mixed']; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-0">
                                         <div class="col">
                                             <button type="submit" class="btn btn-success btn-block">Save changes</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <p>
+                            <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#editStaff" aria-expanded="false" aria-controls="edit">Edit staff</button>
+                        </p>
+                        <div class="collapse" id="editStaff">
+                            <div class="card card-body mb-3">
+                                <?php if (sizeof($staff) > 0) { ?>
+                                    <div class="list-group mb-3" id="list-tab" role="tablist">
+                                        <?php foreach ($staff as $key => $value) { ?>
+                                            <a class="list-group-item list-group-item-action <?php if ($key == 0) { echo 'active'; } ?>" id="list-<?php echo $key; ?>-list" data-toggle="list" href="#list-<?php echo $key; ?>" role="tab" aria-controls="<?php echo $key; ?>"><?php echo $value['first_name'].' '.$value['last_name'].' ('.$value['email'].')'; ?></a>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="tab-content" id="nav-tabContent">
+                                        <?php foreach ($staff as $key => $value) { ?>
+                                            <div class="tab-pane fade show <?php if ($key == 0) { echo 'active'; } ?>" id="list-<?php echo $key; ?>" role="tabpanel" aria-labelledby="list-<?php echo $key; ?>-list">
+                                                <form action="/api/company/delete_staff.php" method="POST">
+                                                    <div class="form-group row d-none">
+                                                        <label for="deleteEmail" class="col-md-3 col-form-label">Email</label>
+                                                        <div class="col-md-9">
+                                                            <input type="email" class="form-control" id="deleteEmail" name="email" placeholder="Email" value="<?php echo $value['email']; ?>">
+                                                        </div>
+                                                    </div>
+                                                    <button class="btn btn-danger btn-block" type="submit">Delete staff</button>
+                                                </form>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                    <hr>
+                                <?php } ?>
+                                <form action="/api/company/add_staff.php" method="POST">
+                                    <div class="form-group row">
+                                        <label for="email" class="col-md-3 col-form-label">Email</label>
+                                        <div class="col-md-9">
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-0">
+                                        <div class="col">
+                                            <button type="submit" class="btn btn-success btn-block">Add staff</button>
                                         </div>
                                     </div>
                                 </form>

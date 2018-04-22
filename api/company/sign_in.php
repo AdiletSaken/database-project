@@ -4,7 +4,7 @@
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    $connection = new PDO('pgsql:host=localhost port=5432 dbname=bonus user=adilet password=');
+    $connection = new PDO('pgsql:host=localhost port=5432 dbname=bonus');
 
     $statement = $connection->prepare("SELECT * FROM companies WHERE email = :email AND password = :password;");
     $statement->bindParam(':email', $email, PDO::PARAM_STR, 50);
@@ -14,6 +14,9 @@
     if ($statement->rowCount() == 1) {
         $_SESSION['email'] = $email;
         $_SESSION['type'] = 'company';
+
+        $row = $statement->fetch();
+        $_SESSION['company_id'] = $row['id'];
 
         header('Location: /account.php');
     } else {

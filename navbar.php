@@ -15,6 +15,11 @@
 				<li class="nav-item <?php if ($page == 'account') { echo 'active'; } ?>">
 					<a class="nav-link" href="account.php">Account</a>
 				</li>
+				<?php if (isset($_SESSION['company_id'])) { ?>
+					<li class="nav-item <?php if ($page == 'transaction') { echo 'active'; } ?>">
+						<a class="nav-link" href="transaction.php">New transaction</a>
+					</li>
+				<?php } ?>
 			<?php } else { ?>
 				<li class="nav-item <?php if ($page == 'sign_up') { echo 'active'; } ?>">
 					<a class="nav-link" href="sign_up.php">Sign up</a>

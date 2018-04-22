@@ -12,7 +12,7 @@
     $statement->execute();
 
     if ($statement->rowCount() == 0) {
-        $statement = $connection->prepare("INSERT INTO companies VALUES (NEXTVAL('companies_id_seq'), :name, :email, :password);");
+        $statement = $connection->prepare("INSERT INTO companies VALUES (NEXTVAL('companies_id_seq'), :name, 5.00, 5.00, :email, :password);");
         $statement->bindParam(':name', $name, PDO::PARAM_STR, 50);
         $statement->bindParam(':email', $email, PDO::PARAM_STR, 50);
         $statement->bindParam(':password', hash('sha256', $password), PDO::PARAM_STR, 64);
@@ -20,6 +20,13 @@
         if ($statement->execute()) {
             $_SESSION['email'] = $email;
             $_SESSION['type'] = 'company';
+
+            $statement = $connection->prepare("SELECT * FROM companies WHERE email = :email;");
+            $statement->bindParam(':email', $email, PDO::PARAM_STR, 50);
+            $statement->execute();
+
+            $row = $statement->fetch();
+            $_SESSION['company_id'] = $row['id'];
 
             header('Location: /account.php');
         } else {
