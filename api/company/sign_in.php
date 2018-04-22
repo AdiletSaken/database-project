@@ -1,4 +1,6 @@
 <?php
+    session_start();
+    
     $email = $_POST["email"];
     $password = $_POST["password"];
 
@@ -10,7 +12,10 @@
     $statement->execute();
 
     if ($statement->rowCount() > 0) {
-        header('Location: /sign_in.php?tab=company&title=Success&content=Successfully logged in.');
+        $_SESSION['email'] = $email;
+        $_SESSION['company'] = 'company';
+
+        header('Location: /account.php');
     } else {
         header('Location: /sign_in.php?tab=company&title=Error&content=Wrong email or password.');
     }

@@ -1,4 +1,6 @@
 <?php
+    session_start();
+
     $name = $_POST['name'];
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -16,9 +18,12 @@
         $statement->bindParam(':password', hash('sha256', $password), PDO::PARAM_STR, 64);
 
         if ($statement->execute()) {
-            header("Location: /sign_up.php?tab=company&title=Success&content=Company is registered.");
+            $_SESSION['email'] = $email;
+            $_SESSION['type'] = 'company';
+
+            header('Location: /account.php');
         } else {
-            header("Location: /sign_up.php?tab=company&title=Error&content=Something went horribly wrong. Try again.");
+            header('Location: /sign_up.php?tab=company&title=Error&content=Something went horribly wrong. Try again.');
         }
     } else {
         header("Location: /sign_up.php?tab=company&title=Error&content=There is already a company registered with $email.");

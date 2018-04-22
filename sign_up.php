@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -37,9 +40,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="phone" class="col-md-3 col-form-label">Phone number</label>
+                                    <label for="phone" class="col-md-3 col-form-label">Phone</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone number">
+                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone">
                                     </div>
                                 </div>
                                 <div class="row form-group">
