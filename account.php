@@ -51,9 +51,9 @@
             <div class="row justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-6">
                     <?php if ($_SESSION['type'] == 'person') { ?>
-                        <div class="alert alert-success" role="alert" style="box-sizing: border-box;">
+                        <div class="alert alert-success" role="alert">
                             <h4 class="alert-heading">Promo code:</h4>
-                            <p>Your promo code is <b><?php echo $account['code']; ?></b>.</p>
+                            <p class="mb-0">Your promo code is <b><?php echo $account['code']; ?></b>.</p>
                         </div>
                         <p>
                             <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#editAccount" aria-expanded="false" aria-controls="edit">Edit account</button>
