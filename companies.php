@@ -14,6 +14,36 @@
         <?php
             $page = "companies";
             include "navbar.php";
+
+            $connection = new PDO('pgsql:host=localhost port=5432 dbname=bonus');
+            $statement = $connection->prepare("SELECT * FROM companies");
+            $statement->execute();
+
+            $companies = $statement->fetchAll();
+
+            $users = array();
+
+            foreach ($companies as $key => $value) {
+                $statement = $connection->prepare("SELECT * FROM company_users WHERE company_id = :company_id;");
+                $statement->bindParam(':company_id', $value['id'], PDO::PARAM_STR);
+                $statement->execute();
+
+                array_push($users, $statement->rowCount());
+            }
         ?>
+        <div class="container p-3">
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-6">
+                    <ul class="list-group">
+                        <?php foreach ($companies as $key => $value) { ?>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <?php echo $value['name']; ?>
+                                <span class="badge badge-<?php if ($users[$key] > 0) { echo 'success'; } else { echo 'danger'; } ?> badge-pill"><?php echo $users[$key] ?> user<?php if ($users[$key] != 1) { echo 's'; } ?></span>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

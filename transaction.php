@@ -48,31 +48,33 @@
                         <h4 class="alert-heading">New transaction:</h4>
                         <p class="mb-0">Currently working for company <b><?php echo $company['name']; ?></b>.</p>
                     </div>
-                    <form action="/api/company/new_transaction.php" method="POST">
-                        <div class="row form-group">
-                            <label for="promo-code" class="col-md-3 col-form-label">Promo code</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" id="promo-code" name="promo-code" placeholder="Promo code">
+                    <div class="card card-body mb-3">
+                        <form action="/api/company/new_transaction.php" method="POST">
+                            <div class="row form-group">
+                                <label for="promo-code" class="col-md-3 col-form-label">Promo code</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="promo-code" name="promo-code" placeholder="Promo code">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="price" class="col-md-3 col-form-label">Price</label>
-                            <div class="col-md-9">
-                                <input type="number" step="0.01" class="form-control" id="price" name="price" placeholder="Price">
+                            <div class="form-group row">
+                                <label for="price" class="col-md-3 col-form-label">Price</label>
+                                <div class="col-md-9">
+                                    <input type="number" step="0.01" class="form-control" id="price" name="price" placeholder="Price">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="bonus" class="col-md-3 col-form-label">Bonus</label>
-                            <div class="col-md-9">
-                                <input type="number" class="form-control" id="bonus" name="bonus" placeholder="Bonus">
+                            <div class="form-group row">
+                                <label for="bonus" class="col-md-3 col-form-label">Bonus</label>
+                                <div class="col-md-9">
+                                    <input type="number" class="form-control" id="bonus" name="bonus" placeholder="Bonus">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row mb-0">
-                            <div class="col">
-                                <button type="submit" class="btn btn-success btn-block">Create transaction</button>
+                            <div class="form-group row mb-0">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-success btn-block">Create transaction</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

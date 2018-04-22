@@ -32,6 +32,32 @@
                 header('Location: /api/sign_out.php');
             }
 
+            if ($_SESSION['type'] == 'person') {
+                $statement = $connection->prepare("SELECT * FROM company_users WHERE user_id = :user_id;");
+                $statement->bindParam(':user_id', $account['id'], PDO::PARAM_STR);
+                $statement->execute();
+
+                $companies = $statement->fetchAll();
+
+                $statement = $connection->prepare("SELECT * FROM transactions WHERE user_id = :user_id;");
+                $statement->bindParam(':user_id', $account['id'], PDO::PARAM_STR);
+                $statement->execute();
+
+                $transactions = $statement->fetchAll();
+            } else if ($_SESSION['type'] == 'company') {
+                $statement = $connection->prepare("SELECT * FROM company_users WHERE company_id = :company_id;");
+                $statement->bindParam(':company_id', $account['id'], PDO::PARAM_STR);
+                $statement->execute();
+
+                $users = $statement->fetchAll();
+
+                $statement = $connection->prepare("SELECT * FROM transactions WHERE company_id = :company_id;");
+                $statement->bindParam(':company_id', $account['id'], PDO::PARAM_STR);
+                $statement->execute();
+
+                $transactions = $statement->fetchAll();
+            }
+
             if ($_SESSION['type'] == 'company') {
                 $statement = $connection->prepare("SELECT * FROM people WHERE company_id = :company_id;");
                 $statement->bindParam(':company_id', $account['id'], PDO::PARAM_STR);
@@ -105,7 +131,82 @@
                                 </form>
                             </div>
                         </div>
-                        <form action="/api/delete.php" method="POST">
+                        <?php if (sizeof($companies) > 0) { ?>
+                            <p>
+                                <button class="btn btn-secondary btn-block" type="button" data-toggle="collapse" data-target="#showCompanies" aria-expanded="false" aria-controls="edit">Show companies</button>
+                            </p>
+                            <div class="collapse" id="showCompanies">
+                                <div class="card card-body mb-3">
+                                    <h4>Companies:</h4>
+                                    <ul class="list-group">
+                                        <?php foreach ($companies as $key => $value) { ?>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <?php
+                                                    $statement = $connection->prepare("SELECT * FROM companies WHERE id = :id;");
+                                                    $statement->bindParam(':id', $value['company_id'], PDO::PARAM_STR);
+                                                    $statement->execute();
+
+                                                    $company = $statement->fetch();
+                                                    echo $company['name'];
+                                                ?>
+                                                <span class="badge badge-primary badge-pill">$<?php echo $value['balance'] ?></span>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        <?php } ?>
+                        <?php if (sizeof($transactions) > 0) { ?>
+                            <p>
+                                <button class="btn btn-secondary btn-block" type="button" data-toggle="collapse" data-target="#showTransactions" aria-expanded="false" aria-controls="edit">Show transactions</button>
+                            </p>
+                            <div class="collapse" id="showTransactions">
+                                <div class="card card-body">
+                                    <h4>Transactions:</h4>
+                                    <ul class="list-group">
+                                        <?php foreach ($transactions as $key => $value) { ?>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                                <?php
+                                                    $statement = $connection->prepare("SELECT * FROM companies WHERE id = :id;");
+                                                    $statement->bindParam(':id', $value['company_id'], PDO::PARAM_STR);
+                                                    $statement->execute();
+
+                                                    $company = $statement->fetch();
+                                                ?>
+                                                <ul class="list-group w-100">
+                                                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                                        Transaction:
+                                                        <span class="badge badge-primary badge-pill">#<?php echo $value['id']; ?></span>
+                                                    </li>
+                                                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                                        Company:
+                                                        <span class="badge badge-primary badge-pill"><?php echo $company['name']; ?></span>
+                                                    </li>
+                                                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                                        Price:
+                                                        <span class="badge badge-primary badge-pill">$<?php echo $value['price']; ?></span>
+                                                    </li>
+                                                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                                        Used:
+                                                        <span class="badge badge-danger badge-pill">$<?php echo $value['used']; ?></span>
+                                                    </li>
+                                                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                                        Added:
+                                                        <span class="badge badge-success badge-pill">$<?php echo $value['added']; ?></span>
+                                                    </li>
+                                                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                                        When happened:
+                                                        <span class="badge badge-primary badge-pill"><?php echo $value['when_happened']; ?></span>
+                                                    </li>
+                                                </a>
+                                                </ul>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        <?php } ?>
+                        <form action="/api/delete.php" method="POST" class="mb-3">
                             <button class="btn btn-danger btn-block" type="submit">Delete account</button>
                         </form>
                     <?php } else if ($_SESSION['type'] == 'company') { ?>
@@ -217,6 +318,80 @@
                                 </form>
                             </div>
                         </div>
+                        <?php if (sizeof($users) > 0) { ?>
+                            <p>
+                                <button class="btn btn-secondary btn-block" type="button" data-toggle="collapse" data-target="#showUsers" aria-expanded="false" aria-controls="edit">Show users</button>
+                            </p>
+                            <div class="collapse" id="showUsers">
+                                <div class="card card-body mb-3">
+                                    <h4>Users:</h4>
+                                    <ul class="list-group">
+                                        <?php foreach ($users as $key => $value) { ?>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <?php
+                                                    $statement = $connection->prepare("SELECT * FROM people WHERE id = :id;");
+                                                    $statement->bindParam(':id', $value['user_id'], PDO::PARAM_STR);
+                                                    $statement->execute();
+
+                                                    $user = $statement->fetch();
+                                                    echo $user['first_name'].' '.$user['last_name'].' ('.$user['email'].')';
+                                                ?>
+                                                <span class="badge badge-primary badge-pill">$<?php echo $value['balance'] ?></span>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        <?php } ?>
+                        <?php if (sizeof($transactions) > 0) { ?>
+                            <p>
+                                <button class="btn btn-secondary btn-block" type="button" data-toggle="collapse" data-target="#showTransactions" aria-expanded="false" aria-controls="edit">Show transactions</button>
+                            </p>
+                            <div class="collapse" id="showTransactions">
+                                <div class="card card-body">
+                                    <h4>Transactions:</h4>
+                                    <ul class="list-group">
+                                        <?php foreach ($transactions as $key => $value) { ?>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                                <?php
+                                                    $statement = $connection->prepare("SELECT * FROM people WHERE id = :id;");
+                                                    $statement->bindParam(':id', $value['user_id'], PDO::PARAM_STR);
+                                                    $statement->execute();
+
+                                                    $user = $statement->fetch();
+                                                ?>
+                                                <ul class="list-group w-100">
+                                                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                                        Transaction:
+                                                        <span class="badge badge-primary badge-pill">#<?php echo $value['id']; ?></span>
+                                                    </li>
+                                                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                                        User:
+                                                        <span class="badge badge-primary badge-pill"><?php echo $user['first_name'].' '.$user['last_name'].' ('.$user['email'].')'; ?></span>
+                                                    </li>
+                                                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                                        Price:
+                                                        <span class="badge badge-primary badge-pill">$<?php echo $value['price']; ?></span>
+                                                    </li>
+                                                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                                        Used:
+                                                        <span class="badge badge-danger badge-pill">$<?php echo $value['used']; ?></span>
+                                                    </li>
+                                                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                                        Added:
+                                                        <span class="badge badge-success badge-pill">$<?php echo $value['added']; ?></span>
+                                                    </li>
+                                                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                                        When happened:
+                                                        <span class="badge badge-primary badge-pill"><?php echo $value['when_happened']; ?></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        <?php } ?>
                         <form action="/api/delete.php" method="POST">
                             <button class="btn btn-danger btn-block" type="submit">Delete account</button>
                         </form>
